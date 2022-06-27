@@ -1,0 +1,61 @@
+syntax = "proto3";
+package project.drone.grpc;
+
+message JoinNotification {
+  int32 id = 1;
+  int32 port = 2;
+  int32 posX = 3;
+  int32 posY = 4;
+}
+
+message ElectionMessage {
+  bool elected = 1;
+  int32 higherId = 2;
+  int32 higherEnergy = 3;
+}
+
+message AckResponse {
+  string ack = 1;
+}
+
+message JoinResponse {
+  bool master = 1;
+  int32 port = 2;
+  int32 posX = 3;
+  int32 posY = 4;
+}
+
+message InfoMessage {
+  int32 id = 1;
+  int32 energy = 2;
+  int32 posX = 3;
+  int32 posY = 4;
+}
+
+message OrderMessage {
+  int32 id = 1;
+  int32 pickUpX = 2;
+  int32 pickUpY = 3;
+  int32 deliveryX = 4;
+  int32 deliveryY = 5;
+}
+
+message DeliveryMessage {
+  int32 id = 1;
+  int32 energy = 2;
+  int32 posX = 3;
+  int32 posY = 4;
+  float km = 5;
+  repeated double ave = 6;
+  int64 time = 7;
+  repeated int64 aveTime = 8;
+}
+
+service DroneService {
+  rpc join(JoinNotification) returns (JoinResponse);
+  rpc election(ElectionMessage) returns (AckResponse);
+  rpc updateInfo(InfoMessage) returns (AckResponse);
+  rpc sendOrder(OrderMessage) returns (AckResponse);
+  rpc updateDelivery(DeliveryMessage) returns (AckResponse);
+  rpc pingPong(AckResponse) returns (AckResponse);
+}

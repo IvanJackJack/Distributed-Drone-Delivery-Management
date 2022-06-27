@@ -1,0 +1,21 @@
+syntax = "proto3";
+package project.drone.grpc;
+
+message JoinNotification {
+  int32 id = 1;
+  int32 port = 2;
+}
+
+message AckResponse {
+  string ack = 1;
+}
+
+message JoinResponse {
+  bool master = 1;
+  int32 port = 2;
+}
+
+service DroneService {
+  rpc join(JoinNotification) returns (JoinResponse);
+
+}
